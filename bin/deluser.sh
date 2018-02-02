@@ -1,5 +1,7 @@
 #!/bin/bash
 # Author: oldboy linux34 chentiangang
+# QQ群: 605799367
+# qq群: 
 # Use this script to remove all users that have been added.
 
 

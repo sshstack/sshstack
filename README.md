@@ -1,15 +1,15 @@
 ##### 笔者Q:972581034 交流群：605799367。有任何疑问可与笔者或加群交流
 
 ## 为什么要写shell跳板机？
->   跳板机的作用目前主要为解决公司开发人员查看日志的需求。而商业跳板机动辄几十万不是我等屌丝公司能消受得起的，开源的跳板机也有几款，如jumpserver，GateOne,麒麟堡垒机等。
+> 跳板机的作用目前主要为解决公司开发人员查看日志的需求。而商业跳板机动辄几十万不是我等屌丝公司能消受得起的，开源的跳板机也有几款，如jumpserver，GateOne,麒麟堡垒机等。
 
 > 但这些真的是拿来就能用的吗？
 
-> 根据生产实践，这些跳板机存在查看日志卡死、web界面无响应、报错提示不直观等问题（简直不能忍了），对于中小公司来说体型过大，安装卸载都大工程。
+> 根据生产实践，这些跳板机存在查看日志卡死、web界面无响应、报错提示不直观等问题，对于中小公司来说体型过大，安装卸载都是大工程（简直不能忍了）。
 
 > 二次开发可能是个较好的选择，但不是每个运维都会python，而且对于100台以下规模服务器来说，价值也不大。
 
-> 所以shell跳板机就有了，它非常轻量级，无需数据库，基于ssh协议和linux基本命令，运行流畅，使用简单。对运维来说具有亲和力，且易于个性化修改和定制，有了它可轻松管理100台左右的服务器。实在是运维同学居家旅行必备良药啊！
+> 所以shell跳板机就有了，它非常轻量级，无需数据库，基于ssh协议和linux基本命令，运行流畅，使用简单。对运维来说具有亲和力，易于个性化修改和定制，有了它可轻松管理100台左右的服务器。实在是运维同学居家旅行必备良药啊！
 
 
 ## 有哪些功能？
@@ -32,69 +32,88 @@
 
 ### 二、目录说明
 ```sh
+[root@oldboy sshstack]# tree
 .
-├── bin                     # 用户管理、资产授权脚本存放目录
-│   ├── deluser.sh          # 远程用户脚本
-│   ├── localadd.sh         # 本地用户添加
-│   ├── remoteadd.sh        # 用户授权
-│   └── sshstack.sh              # 用户登陆后执行的shell
+├── bin                     # 可执行文件
+│   ├── deluser.sh          # 删除用户脚本
+│   ├── localadd.sh         # 注册用户脚本
+│   ├── remoteadd.sh        # 给用户授权主机脚本
+│   └── sshstack.sh         # 用户登陆后执行的shell
 ├── conf                    # 配置文件
-│   ├── hosts               # 这里填写所有被管理机
-│   └── sshstack.conf            # 相关路径配置文件
-├── data                    # 用户注册授权信息目录
-│   └── zhangzhongbo.info
-├── func                    # 函数存放目录
+│   ├── hosts               # 配置已有的资产
+│   └── sshstack.conf       # 配置文件
+├── data                    # 创建用户信息与主机授权信息存放目录
+│   └── oldboy.info        
+├── func                    # 函数库
 │   └── funcs
-├── README.md
+└── README.md
+
+4 directories, 9 files
 ```
 
 ### 三、最佳实践
 #### 1.安装
-将代码拉到本地后，放到/server/scripts/目录下
+> 拉取代码到任意目录即完成安装，需要注意目录权限为755，以下存放在/opt目录下
+
 ```sh
-[root@test sshstack]# ls
-bin  conf  data  func  README.md
-[root@test sshstack]# pwd
-/server/scripts/sshstack
+cd /opt
+git clone git@github.com:sshstack/sshstack.git
 ```
-创建软链接
-```sh
-ln -sv /server/scripts/sshstack/bin/sshstack.sh /opt/sshstack/sshstack.sh
-```
-完成安装
 
 #### 2.添加资产
-> 将被管理主机填入/server/scripts/sshstack/conf/hosts即可,如下
+> 将被管理主机填入/opt/sshstack/conf/hosts即可,这里我们有三台oldboy的主机。
 ```sh
-cat /server/scripts/sshstack/conf/hosts
-[IP地址]    [主机名]      [备注]
-10.0.1.22   test-web02    接口
-10.0.1.24   test-web04    h5页面
-10.0.1.25   test-web05    xxxxxx
+[root@oldboy conf]# cat /opt/sshstack/conf/hosts
+[IP地址]    [主机名]        [备注]
+10.0.0.21   oldboy-web01    老男孩教育官网接口
+10.0.0.22   oldboy-web02    老男孩教育官网h5页面
+10.0.0.23   oldboy-web03    老男孩教育官网后台
 ```
 
-#### 3.创建本地用户
+#### 3.创建本地用户oldboy
+执行脚本，输入oldboy
 ```sh
-[root@test ~]# /server/scripts/sshstack/bin/localadd.sh
-输入用户> wanggang
-info: 本地创建用户
+[root@oldboy sshstack]# /opt/sshstack/bin/localadd.sh
+输入用户> oldboy
+INFO: 创建用户
 SUCCESS.
-wanggang
-info: 生成随机密码
+INFO: 生成随机密码
 SUCCESS.
-info: 写入文件/server/scripts/sshstack/data/wanggang.info
+INFO: 写入文件/opt/sshstack/data/oldboy.info
 ```
-> 用户创建好后，用户信息保存在/server/scripts/sshstack/data/wanggang.info文件
+> 用户创建好后，用户信息保存在/opt/sshstack/data/wanggang.info文件
 
 
 #### 4.授权主机
+这里将授权oldboy用户可以登陆oldboy-web01、oldboy-web02、oldboy-web03这三台主机
 ```sh
-[root@test ~]# /server/scripts/sshstack/bin/remoteadd.sh
-输入用户> wanggang
-授权主机> 10.0.1.22
+[root@oldboy sshstack]# /opt/sshstack/bin/remoteadd.sh
+输入用户> oldboy
+授权主机> 10.0.0.21
 INFO: 生成本地密钥
 SUCCESS.
-INFO: 创建远端.ssh目录
+INFO: 创建远端用户
+SUCCESS.
+INFO: 发送公钥到远程主机
+SUCCESS.
+INFO: 修改权限
+SUCCESS.
+[root@oldboy sshstack]# /opt/sshstack/bin/remoteadd.sh
+输入用户> oldboy
+授权主机> 10.0.0.22
+INFO: 生成本地密钥
+SUCCESS.
+INFO: 创建远端用户
+SUCCESS.
+INFO: 发送公钥到远程主机
+SUCCESS.
+INFO: 修改权限
+SUCCESS.
+[root@oldboy sshstack]# /opt/sshstack/bin/remoteadd.sh
+输入用户> oldboy
+授权主机> 10.0.0.23
+INFO: 生成本地密钥
+SUCCESS.
 INFO: 创建远端用户
 SUCCESS.
 INFO: 发送公钥到远程主机
@@ -102,7 +121,38 @@ SUCCESS.
 INFO: 修改权限
 SUCCESS.
 ```
-> 授权主机后，信息同样保存在/server/scripts/sshstack/data/wanggang.info文件
+> 授权主机后，信息同样保存在/opt/sshstack/data/oldboy.info文件
 
-#### 5.用户登陆
+#### 5.查看用户信息
+刚创建的用户信息保存在data目录下
+```sh
+[root@oldboy data]# cat /opt/sshstack/data/oldboy.info
+2018-02-02:14:46:24  用户名 oldboy  密码 2fe579e7
+10.0.0.21   oldboy-web01    老男孩教育官网接口
+10.0.0.22   oldboy-web02    老男孩教育官网h5页面
+10.0.0.23   oldboy-web03    老男孩教育官网后台
+```
+
+
+#### 6.用户登陆
+因为oldboy用户在oldboy主机上已经创建，我们只需要在自已电脑执行ssh命令即可连接，我这里以mac为例：
+```sh
+Mac:~ chentiangang$ ssh -p25535 oldboy@oldboy
+oldboy@oldboy's password:
+Last failed login: Fri Feb  2 10:28:44 CST 2018 from 106.37.109.202 on ssh:notty
+There were 2 failed login attempts since the last successful login.
+
+Welcome to Alibaba Cloud Elastic Compute Service !
+主机列表：
+        [IP地址]        [主机名]         [备注]
+	    10.0.0.21     oldboy-web01    老男孩教育官网接口
+        10.0.0.22     oldboy-web02    老男孩教育官网h5页面
+        10.0.0.23     oldboy-web03    老男孩教育官网后台
+
+改密：password
+退出：exit
+清屏：clear
+提示：输入主机名或IP地址连接
+oldboy 选择主机 >
+```
 用户登陆后即要看到已授权的主机，可以通过输入password修改密码，输入主机名或IP地址即可登陆到对应的授权主机。

@@ -1,5 +1,6 @@
 #!/bin/bash
 # Author: oldboy linux34 chentiangang
+# QQ群: 605799367
 # Use this script to register your users locally. 
 
 SSHSTACK="$0"

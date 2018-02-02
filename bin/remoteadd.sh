@@ -1,5 +1,6 @@
 #!/bin/bash
 # Author: oldboy linux34 chentiangang
+# QQ群: 605799367
 # Add the authorization host with this script.
 
 SSHSTACK="$0"

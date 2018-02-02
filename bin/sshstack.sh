@@ -1,5 +1,6 @@
 #!/bin/bash
 # Author: oldboy linux34 chentiangang
+# QQ群: 605799367
 # The shell that the user executes after logging in.
 
 SSHSTACK="$0"
