@@ -1,4 +1,7 @@
 #!/bin/bash
+# Author: oldboy linux34 chentiangang 
+# The script calls the function library.
+
 check(){
   if [ $? == 0 ];then
     echo "SUCCESS."
