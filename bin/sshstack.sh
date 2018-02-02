@@ -37,7 +37,7 @@ reading(){
     read -p "`whoami` 选择主机 > " HOST
     if [ -z "$HOST" ];then
       # 如果输入空的字符串，则跳出本次循环
-      continue 
+       reading
     elif [ "`grep -c "$HOST" $user_info`" == "0" ];then
       case $HOST in
           password) passwd ; continue ;;
