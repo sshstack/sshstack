@@ -1,6 +1,10 @@
 #!/bin/bash
+# Author: oldboy linux34 chentiangang
+# The shell that the user executes after logging in.
+
 SSHSTACK="$0"
 SSHSTACK="$(dirname "${SSHSTACK}")"
+# 获取sshstack安装目录
 SSHSTACKDIR="$(cd "${SSHSTACK}"; cd ..;pwd)"
 username=`whoami`
 . ${SSHSTACKDIR}/conf/sshstack.conf
