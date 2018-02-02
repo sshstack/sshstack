@@ -22,7 +22,7 @@ create_key(){
 }
 
 add_user(){
-  if ssh -i ${user_key_file} -p25535 -o StrictHostKeyChecking=no ${username}@${IP} ":" &> /dev/null;then
+  if ssh -i ${user_key_file} -p${ssh_port} -o StrictHostKeyChecking=no ${username}@${IP} ":" &> /dev/null;then
     echo "远端用户已存在"
     exit 1
   else
@@ -34,7 +34,7 @@ add_user(){
 
 send_key(){
   echo "INFO: 发送公钥到远程主机" 
-  scp -P25535  ${user_key_file}.pub ${IP}:${user_home}/.ssh/authorized_keys &>/dev/null
+  scp -P${ssh_port}  ${user_key_file}.pub ${IP}:${user_home}/.ssh/authorized_keys &>/dev/null
   check
   echo "INFO: 修改权限"
   ansible $IP -m shell -a "chmod 600 ${user_home}/.ssh/authorized_keys && chown -R ${username}.${username} ${user_home}" &>/dev/null

@@ -47,7 +47,7 @@ reading(){
           *) printf "\033[31m      error: 不能连接${HOST}.\033[0m\n" && continue;;
       esac
     else
-      ssh -i /home/`whoami`/.ssh/id_dsa -p25535 -o StrictHostKeyChecking=no `whoami`@${HOST}
+      ssh -i /home/`whoami`/.ssh/id_dsa -p${ssh_port} -o StrictHostKeyChecking=no `whoami`@${HOST}
     fi
   done
 }
