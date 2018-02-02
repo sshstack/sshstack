@@ -145,7 +145,7 @@ There were 2 failed login attempts since the last successful login.
 Welcome to Alibaba Cloud Elastic Compute Service !
 主机列表：
         [IP地址]        [主机名]         [备注]
-	    10.0.0.21     oldboy-web01    老男孩教育官网接口
+        10.0.0.21     oldboy-web01    老男孩教育官网接口
         10.0.0.22     oldboy-web02    老男孩教育官网h5页面
         10.0.0.23     oldboy-web03    老男孩教育官网后台
 
