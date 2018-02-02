@@ -37,10 +37,10 @@
 │   ├── deluser.sh          # 远程用户脚本
 │   ├── localadd.sh         # 本地用户添加
 │   ├── remoteadd.sh        # 用户授权
-│   └── jms.sh              # 用户登陆后执行的shell
+│   └── sshstack.sh              # 用户登陆后执行的shell
 ├── conf                    # 配置文件
 │   ├── hosts               # 这里填写所有被管理机
-│   └── jms.conf            # 相关路径配置文件
+│   └── sshstack.conf            # 相关路径配置文件
 ├── data                    # 用户注册授权信息目录
 │   └── zhangzhongbo.info
 ├── func                    # 函数存放目录
@@ -52,21 +52,21 @@
 #### 1.安装
 将代码拉到本地后，放到/server/scripts/目录下
 ```sh
-[root@test shell-jumpserver]# ls
+[root@test sshstack]# ls
 bin  conf  data  func  README.md
-[root@test shell-jumpserver]# pwd
-/server/scripts/shell-jumpserver
+[root@test sshstack]# pwd
+/server/scripts/sshstack
 ```
 创建软链接
 ```sh
-ln -sv /server/scripts/shell-jumpserver/bin/jms.sh /opt/jms/jms.sh
+ln -sv /server/scripts/sshstack/bin/sshstack.sh /opt/sshstack/sshstack.sh
 ```
 完成安装
 
 #### 2.添加资产
-> 将被管理主机填入/server/scripts/shell-jumpserver/conf/hosts即可,如下
+> 将被管理主机填入/server/scripts/sshstack/conf/hosts即可,如下
 ```sh
-cat /server/scripts/shell-jumpserver/conf/hosts
+cat /server/scripts/sshstack/conf/hosts
 [IP地址]    [主机名]      [备注]
 10.0.1.22   test-web02    接口
 10.0.1.24   test-web04    h5页面
@@ -75,21 +75,21 @@ cat /server/scripts/shell-jumpserver/conf/hosts
 
 #### 3.创建本地用户
 ```sh
-[root@test ~]# /server/scripts/shell-jumpserver/bin/localadd.sh
+[root@test ~]# /server/scripts/sshstack/bin/localadd.sh
 输入用户> wanggang
 info: 本地创建用户
 SUCCESS.
 wanggang
 info: 生成随机密码
 SUCCESS.
-info: 写入文件/server/scripts/shell-jumpserver/data/wanggang.info
+info: 写入文件/server/scripts/sshstack/data/wanggang.info
 ```
-> 用户创建好后，用户信息保存在/server/scripts/shell-jumpserver/data/wanggang.info文件
+> 用户创建好后，用户信息保存在/server/scripts/sshstack/data/wanggang.info文件
 
 
 #### 4.授权主机
 ```sh
-[root@test ~]# /server/scripts/shell-jumpserver/bin/remoteadd.sh
+[root@test ~]# /server/scripts/sshstack/bin/remoteadd.sh
 输入用户> wanggang
 授权主机> 10.0.1.22
 INFO: 生成本地密钥
@@ -102,7 +102,7 @@ SUCCESS.
 INFO: 修改权限
 SUCCESS.
 ```
-> 授权主机后，信息同样保存在/server/scripts/shell-jumpserver/data/wanggang.info文件
+> 授权主机后，信息同样保存在/server/scripts/sshstack/data/wanggang.info文件
 
 #### 5.用户登陆
 用户登陆后即要看到已授权的主机，可以通过输入password修改密码，输入主机名或IP地址即可登陆到对应的授权主机。

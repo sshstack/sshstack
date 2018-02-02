@@ -1,5 +1,12 @@
 #!/bin/bash
-. /server/scripts/shell-jumpserver/func/funcs
+
+
+
+SSHSTACK="$0"
+SSHSTACK="$(dirname "${SSHSTACK}")"
+SSHSTACKDIR="$(cd "${SSHSTACK}"; cd ..;pwd)"
+. ${SSHSTACKDIR}/func/funcs
+
 PASS=`uuidgen |cut -c -8` 
 TIME=`date "+%F:%H:%M:%S"`
 
@@ -11,20 +18,20 @@ while true;do
     continue
   else
     # 本地创建用户
-    echo "info: 本地创建用户"
+    echo "INFO: 创建用户"
     for i in $username;do
-      useradd -s /opt/jms/jms.sh $i
+      useradd -s ${SSHSTACKDIR}/bin/sshstack.sh $i
       check
       echo $i
     done
     # 设置密码
-    echo "info: 生成随机密码"
+    echo "INFO: 生成随机密码"
     echo $PASS | passwd --stdin $username &> /dev/null
     check
     # 写入文件
-    . /server/scripts/shell-jumpserver/conf/jms.conf
-    echo "info: 写入文件$username_info"
-    echo "$TIME  用户名 $username  密码 $PASS" >> $username_info
+    . ${SSHSTACKDIR}/conf/sshstack.conf
+    echo "INFO: 写入文件$user_info"
+    echo "$TIME  用户名 $username  密码 $PASS" >> $user_info
     break
   fi
 done

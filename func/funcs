@@ -14,20 +14,17 @@ create_key(){
     mkdir -p ${user_home}/.ssh
     ssh-keygen -t dsa -P '' -f ${user_key_file} &> /dev/null
     check
-    echo ""
     chown -R ${username}.${username} $user_home
-    check
   fi
 }
 
 add_user(){
-  echo "INFO: 创建远端用户，创建远端.ssh目录"
   if ssh -i ${user_key_file} -p25535 -o StrictHostKeyChecking=no ${username}@${IP} ":" &> /dev/null;then
     echo "远端用户已存在"
     exit 1
   else
-    ansible $IP -m shell -a "useradd ${username} && mkdir -p ${user_home}/.ssh" &>/dev/null
     echo "INFO: 创建远端用户"
+    ansible $IP -m shell -a "useradd ${username} && mkdir -p ${user_home}/.ssh" &>/dev/null
     check
   fi
 }
