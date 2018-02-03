@@ -41,7 +41,7 @@ reading(){
     elif [ "`grep -c "$HOST" $user_info`" == "0" ];then
       case $HOST in
           password) passwd ; continue ;;
-          clear) clear ;main ;;
+          clear) clear ; reading ;;
           exit) echo "退出登录" && exit ;;
           quit) echo "退出登录" && exit ;;
           *) printf "\033[31m      error: 不能连接${HOST}.\033[0m\n" && continue;;
