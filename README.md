@@ -57,7 +57,7 @@
 
 ```sh
 cd /opt
-git clone git@github.com:sshstack/sshstack.git
+git clone https://github.com/sshstack/sshstack.git
 ```
 
 #### 2.添加资产
