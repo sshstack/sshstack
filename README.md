@@ -155,4 +155,4 @@ Welcome to Alibaba Cloud Elastic Compute Service !
 提示：输入主机名或IP地址连接
 oldboy 选择主机 >
 ```
-用户登陆后即要看到已授权的主机，可以通过输入password修改密码，输入主机名或IP地址即可登陆到对应的授权主机。
+> 用户登陆后即要看到已授权的主机，可以通过输入password修改密码，输入主机名或IP地址即可登陆到对应的授权主机。
